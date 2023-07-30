@@ -383,7 +383,9 @@ void AMController::readTime() {
   PRINT("NTP Response [");
   PRINT(unixTime);
   PRINT("] ");
+#ifdef DEBUG  
   printTime(unixTime);
+#endif  
   RTCTime currentTime;
   _rtc->getTime(currentTime);
   PRINTLN("The RTC was just set to: " + String(currentTime));
@@ -452,7 +454,9 @@ void AMController::manageAlarms(char *variable, char *value) {
       PRINTLN(_alarmId);
       createUpdateAlarm(_alarmId, _alarmTime, atoi(value));
     }
+#ifdef DEBUG    
     dumpAlarms();
+#endif    
   }
 }
 
@@ -472,8 +476,9 @@ void AMController::inizializeAlarms() {
       EEPROM.put(i * sizeof(a), a);
     }
   }
-
+#ifdef DEBUG 
   dumpAlarms();
+#endif  
 }
 
 void AMController::createUpdateAlarm(char *id, unsigned long time, bool repeat) {

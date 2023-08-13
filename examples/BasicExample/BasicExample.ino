@@ -220,8 +220,8 @@ void loop() {
 
 */
 void doWork() {
-
   //Serial.println("doWork");
+
   if (millis() - lastTemperatureMeasurement > 1000) {
     float v = getVoltage(TEMPERATUREPIN);  //getting the voltage reading from the temperature sensor
     temperature = v * 100;                 // converting voltage to temperature;
@@ -240,11 +240,10 @@ void doWork() {
 
 */
 void doSync() {
-
-  Serial.println("doSync");
+  //Serial.println("doSync");
 
   amController.writeMessage("Knob1", (float)map(servo.read(), 0, 180, 0, 1023));
-  amController.writeMessage("Slider1", (int)map(analogRead(DAC), 0, 1023, 0, 255)); // DAC is 8 bits (0..255) ADC is 10 bits (0..1023)
+  amController.writeMessage("Slider1", (int)map(analogRead(DAC), 0, 1023, 0, 255));  // DAC is 8 bits (0..255) ADC is 10 bits (0..1023)
   amController.writeMessage("S1", led);
   amController.writeTxtMessage("Msg", "Hello, I'm your Arduino R4 board");
 }
@@ -256,10 +255,9 @@ void doSync() {
 
 */
 void processIncomingMessages(char *variable, char *value) {
-
-  Serial.print(variable);
-  Serial.print(" : ");
-  Serial.println(value);
+  //Serial.print(variable);
+  //Serial.print(" : ");
+  //Serial.println(value);
 
   if (strcmp(variable, "S1") == 0) {
 
@@ -313,7 +311,6 @@ void processIncomingMessages(char *variable, char *value) {
 
 */
 void processOutgoingMessages() {
-
   amController.writeMessage("T", temperature);
   amController.writeMessage("Led", led);
   amController.writeMessage("Pot", pot);
@@ -326,7 +323,6 @@ void processOutgoingMessages() {
 
 */
 void processAlarms(char *alarm) {
-
   Serial.print(alarm);
   Serial.println(" fired");
 
@@ -340,7 +336,6 @@ void processAlarms(char *alarm) {
 
 */
 void deviceConnected() {
-
   Serial.println("Device connected");
   matrix.loadFrame(connected);
 }
@@ -352,7 +347,6 @@ void deviceConnected() {
 
 */
 void deviceDisconnected() {
-
   Serial.println("Device disconnected");
   matrix.loadFrame(disconnected);
 }
@@ -369,6 +363,5 @@ void deviceDisconnected() {
 */
 float getVoltage(int pin) {
   float v = (analogRead(A1) * VCC / 1024);  // converting from a 0 to 1023 digital range to voltage
-  //Serial.println(v, 4);
   return v;
 }

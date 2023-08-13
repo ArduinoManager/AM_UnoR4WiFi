@@ -27,7 +27,8 @@
 #define ALARMS_SUPPORT  // uncomment to enable support for Alarm Widget
 #define SD_SUPPORT  // uncomment to enable support for SD Widget
 #define SDLOGGEDATAGRAPH_SUPPORT  // uncomment to enable support for Logged Data Widget
-// #define DEBUG  // uncomment to enable debugging - You should not need it !
+//#define DEBUG  // uncomment to enable debugging - You should not need it !
+//#define DEBUG_ALARMS // uncomment to enable alarms debugging (DEBUG has to be uncommented as well)
 
 
 #if defined(DEBUG)

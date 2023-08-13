@@ -158,8 +158,14 @@ void AMController::loop(unsigned long _delay) {
           } else
 #endif
 #ifdef SD_SUPPORT
-            if (strlen(_variable) > 0 && (strcmp(_variable, "SD") == 0 || strcmp(_variable, "$SDDL$") == 0)) {
+          if (strlen(_variable) > 0 && (strcmp(_variable, "SD") == 0 || strcmp(_variable, "$SDDL$") == 0)) {
             manageSD(_variable, _value);
+          } else
+#endif
+#ifdef SDLOGGEDATAGRAPH_SUPPORT
+          if (strlen(_variable) > 0 && strcmp(_variable, "$SDLogData$") == 0) {
+            PRINT("Logged data request for: "); PRINTLN(_value);
+            sdSendLogData(_value);
           } else
 #endif
             if (strlen(_variable) > 0 && strlen(_value) > 0) {
@@ -565,9 +571,8 @@ void AMController::checkAndFireAlarms() {
   _rtc->getTime(currentTime);
   unsigned long now = currentTime.getUnixTime();
 
+#ifdef DEBUG_ALARMS
   PRINTLN("checkAndFireAlarms @" + String(currentTime));
-
-#ifdef DEBUG
   dumpAlarms();
 #endif
 
@@ -581,7 +586,7 @@ void AMController::checkAndFireAlarms() {
       _processAlarms(&a.id[1]);
       if (a.repeat) {
         a.time += 86400;  // Scheduled again tomorrow
-#ifdef DEBUG
+#ifdef DEBUG_ALARMS
         PRINTLN("Alarm rescheduled at ");
         this->printTime(a.time);
         Serial.println();
@@ -594,7 +599,7 @@ void AMController::checkAndFireAlarms() {
       }
 
       EEPROM.put(i * sizeof(a), a);
-#ifdef DEBUG
+#ifdef DEBUG_ALARMS
       this->dumpAlarms();
 #endif
     }
@@ -609,7 +614,7 @@ void AMController::manageSD(char *variable, char *value) {
   PRINTLN("Manage SD");
 
   if (strcmp(variable, "SD") == 0) {
-    PRINTLN("\tFile List");
+    PRINTLN("\t[File List Start]");
 
     File dir = SD.open("/");
     if (!main) {
@@ -637,10 +642,10 @@ void AMController::manageSD(char *variable, char *value) {
     uint8_t buffer[10];
     strcpy((char *)&buffer[0], "SD=$EFL$#");
     _pClient->write(buffer, 9 * sizeof(uint8_t));
-    PRINTLN("\tFile list sent");
+    PRINTLN("\t[File List End]");
   }
   if (strcmp(_variable, "$SDDL$") == 0) {
-    PRINT("File: ");
+    PRINT("Sending File: ");
     PRINTLN(value);
 
     File dataFile = SD.open(value, FILE_READ);
@@ -661,7 +666,7 @@ void AMController::manageSD(char *variable, char *value) {
       delay(150);
       dataFile.close();
 
-      PRINTLN("Fine Sent");
+      PRINTLN("File sent");
     }
     _pClient->flush();
   }
@@ -925,12 +930,7 @@ uint16_t AMController::sdFileSize(const char *variable) {
 }
 
 void AMController::sdPurgeLogData(const char *variable) {
-
-  noInterrupts();
-
   SD.remove(variable);
-
-  interrupts();
 }
 
 #endif

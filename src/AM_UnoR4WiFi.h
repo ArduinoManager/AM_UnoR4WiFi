@@ -193,6 +193,10 @@ private:
   void manageSD(char *variable, char *value);
 #endif
 
+#ifdef SDLOGGEDATAGRAPH_SUPPORT
+    void sdSendLogData(const char *variable);
+#endif  
+
 public:
 
 #if defined(ALARMS_SUPPORT)
@@ -261,8 +265,9 @@ public:
   void sdLog(const char *variable, unsigned long time, float v1, float v2, float v3, float v4);
   void sdLog(const char *variable, unsigned long time, float v1, float v2, float v3, float v4, float v5);
 
-  void sdSendLogData(const char *variable);
-
+  // Size in Kbytes
+  // If the file doesn't exist, returns 0
+  // If the file exists, returns at least 1
   uint32_t sdFileSize(const char *variable);
   void sdPurgeLogData(const char *variable);
 #endif

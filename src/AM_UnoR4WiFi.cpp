@@ -429,7 +429,6 @@ void AMController::sendNTPpacket(IPAddress &address, WiFiUDP udp) {
 #ifdef DEBUG
 
 void AMController::printTime(unsigned long time) {
-
   RTCTime currentTime = RTCTime(time);
   PRINTLN(String(currentTime));
 }
@@ -917,16 +916,16 @@ void AMController::sdSendLogData(const char *variable) {
   this->writeTxtMessage(variable, "");
 }
 
-// Size in bytes
+// Size in Kbytes
 uint32_t AMController::sdFileSize(const char *variable) {
 
   File dataFile = SD.open(variable, FILE_WRITE);
 
   if (dataFile) {
-    return dataFile.size();
+    return max(1, dataFile.size() / 1024);
   }
 
-  return -1;
+  return 0;
 }
 
 void AMController::sdPurgeLogData(const char *variable) {

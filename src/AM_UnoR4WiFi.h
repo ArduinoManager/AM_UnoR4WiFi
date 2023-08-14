@@ -263,7 +263,7 @@ public:
 
   void sdSendLogData(const char *variable);
 
-  uint16_t sdFileSize(const char *variable);
+  uint32_t sdFileSize(const char *variable);
   void sdPurgeLogData(const char *variable);
 #endif
 };

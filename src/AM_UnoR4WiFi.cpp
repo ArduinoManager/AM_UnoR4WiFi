@@ -918,7 +918,7 @@ void AMController::sdSendLogData(const char *variable) {
 }
 
 // Size in bytes
-uint16_t AMController::sdFileSize(const char *variable) {
+uint32_t AMController::sdFileSize(const char *variable) {
 
   File dataFile = SD.open(variable, FILE_WRITE);
 

@@ -706,7 +706,7 @@ void AMController::sdLogLabels(const char *variable, const char *label1, const c
 
   File dataFile = SD.open(variable, FILE_WRITE);
 
-  if (dataFile) {
+  if (dataFile && time > 0) {
     dataFile.print("-");
     dataFile.print(";");
     dataFile.print(label1);

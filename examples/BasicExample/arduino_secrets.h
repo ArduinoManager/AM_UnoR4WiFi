@@ -1,2 +1,2 @@
-#define SECRET_SSID "homewirelessnetwork"
-#define SECRET_PASS "Fabrizio22Camilla22Laura26!"
+#define SECRET_SSID "???"
+#define SECRET_PASS "???"

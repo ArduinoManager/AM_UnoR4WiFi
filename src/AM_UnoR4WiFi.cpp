@@ -750,7 +750,7 @@ void AMController::sdLog(const char *variable, unsigned long time, float v1) {
 
   File dataFile = SD.open(variable, FILE_WRITE);
 
-  if (dataFile) {
+  if (dataFile && time > 0) {
     dataFile.print(time);
     dataFile.print(";");
     dataFile.print(v1);
@@ -919,7 +919,7 @@ void AMController::sdSendLogData(const char *variable) {
 // Size in Kbytes
 uint32_t AMController::sdFileSize(const char *variable) {
 
-  File dataFile = SD.open(variable, FILE_WRITE);
+  File dataFile = SD.open(variable, FILE_READ);
 
   if (dataFile) {
     return max(1, dataFile.size() / 1024);

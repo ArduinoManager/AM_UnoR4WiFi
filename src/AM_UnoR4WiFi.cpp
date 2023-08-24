@@ -23,20 +23,6 @@
 
 #include "AM_UnoR4WiFi.h"
 
-char *dtostrf(double val, signed char width, unsigned char prec, char *sout);
-
-#if defined(ALARMS_SUPPORT)
-
-// bool check(uint8_t *pRecord, void *pData) {
-//   // Alarm a;
-//   // memcpy(&a, pRecord, sizeof(a));
-//   // if (strcmp(a.id, (char *)pData) == 0)
-//   //   return true;
-//   return false;
-// }
-
-#endif
-
 #if defined(ALARMS_SUPPORT)
 
 static bool checkAlarmsNow = false;  // true if it's time to check alarms
@@ -111,6 +97,7 @@ void AMController::loop(unsigned long _delay) {
 #if defined(ALARMS_SUPPORT) || defined(SDLOGGEDATAGRAPH_SUPPORT)
   if (_syncTime) {
     _syncTime = false;
+    _rtc->begin();
     this->syncTime();
     return;
   }
@@ -382,7 +369,6 @@ void AMController::readTime() {
   // subtract seventy years to get Unix time:
   unsigned long unixTime = secsSince1900 - seventyYears;
 
-  _rtc->begin();
   RTCTime timeToSet = RTCTime(unixTime);
   _rtc->setTime(timeToSet);
 
@@ -706,13 +692,13 @@ void AMController::sdLogLabels(const char *variable, const char *label1, const c
 
   File dataFile = SD.open(variable, FILE_WRITE);
 
-  if (dataFile && time > 0) {
+  if (dataFile) {
     dataFile.print("-");
     dataFile.print(";");
     dataFile.print(label1);
     dataFile.print(";");
 
-    if (label2 != NULL)
+    if (label2  != NULL)
       dataFile.print(label2);
     else
       dataFile.print("-");
@@ -750,7 +736,7 @@ void AMController::sdLog(const char *variable, unsigned long time, float v1) {
 
   File dataFile = SD.open(variable, FILE_WRITE);
 
-  if (dataFile && time > 0) {
+  if (dataFile && (time > 946684800)) {
     dataFile.print(time);
     dataFile.print(";");
     dataFile.print(v1);
@@ -770,7 +756,7 @@ void AMController::sdLog(const char *variable, unsigned long time, float v1, flo
 
   File dataFile = SD.open(variable, FILE_WRITE);
 
-  if (dataFile && time > 0) {
+  if (dataFile && (time > 946684800)) {
     dataFile.print(time);
     dataFile.print(";");
     dataFile.print(v1);
@@ -793,7 +779,7 @@ void AMController::sdLog(const char *variable, unsigned long time, float v1, flo
 
   File dataFile = SD.open(variable, FILE_WRITE);
 
-  if (dataFile && time > 0) {
+  if (dataFile && (time > 946684800)) {
     dataFile.print(time);
     dataFile.print(";");
     dataFile.print(v1);
@@ -820,7 +806,7 @@ void AMController::sdLog(const char *variable, unsigned long time, float v1, flo
 
   File dataFile = SD.open(variable, FILE_WRITE);
 
-  if (dataFile && time > 0) {
+  if (dataFile && (time > 946684800)) {
     dataFile.print(time);
     dataFile.print(";");
     dataFile.print(v1);
@@ -849,7 +835,7 @@ void AMController::sdLog(const char *variable, unsigned long time, float v1, flo
 
   File dataFile = SD.open(variable, FILE_WRITE);
 
-  if (dataFile && time > 0) {
+  if (dataFile && (time > 946684800)) {
     dataFile.print(time);
     dataFile.print(";");
     dataFile.print(v1);

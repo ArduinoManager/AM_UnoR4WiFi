@@ -43,7 +43,6 @@ AMController::AMController(WiFiServer *server,
 
   _processAlarms = processAlarms;
   _sendNtpRequest = false;
-  _lastAlarmCheck = 0;
 #endif
 }
 #endif
@@ -105,7 +104,7 @@ void AMController::loop(unsigned long _delay) {
   if (_udp.parsePacket()) {
     this->readTime();
 #ifdef ALARMS_SUPPORT    
-    inizializeAlarms();
+    initializeAlarms();
     if (_processAlarms != NULL) {
       _rtc->setPeriodicCallback(enableCheckAlarms, Period::ONCE_EVERY_2_SEC);
     }
@@ -451,7 +450,7 @@ void AMController::manageAlarms(char *variable, char *value) {
   }
 }
 
-void AMController::inizializeAlarms() {
+void AMController::initializeAlarms() {
 
   PRINTLN("Initialize Alarms");
 

@@ -27,8 +27,8 @@
 #define ALARMS_SUPPORT  // uncomment to enable support for Alarm Widget
 #define SD_SUPPORT  // uncomment to enable support for SD Widget
 #define SDLOGGEDATAGRAPH_SUPPORT  // uncomment to enable support for Logged Data Widget
-//#define DEBUG  // uncomment to enable debugging - You should not need it !
-//#define DEBUG_ALARMS // uncomment to enable alarms debugging (DEBUG has to be uncommented as well)
+#define DEBUG  // uncomment to enable debugging - You should not need it !
+#define DEBUG_ALARMS // uncomment to enable alarms debugging (DEBUG has to be uncommented as well)
 
 
 #if defined(DEBUG)
@@ -110,7 +110,6 @@ private:
 #ifdef ALARMS_SUPPORT
   char _alarmId[8];
   unsigned long _alarmTime;
-  unsigned long _lastAlarmCheck;
 #endif
 
 #if defined(ALARMS_SUPPORT) || defined(SDLOGGEDATAGRAPH_SUPPORT)
@@ -150,6 +149,7 @@ private:
 
 #ifdef ALARMS_SUPPORT
   void manageAlarms(char *variable, char *value);
+
   /*
       Pointer to the function where alerts are processed
 
@@ -181,7 +181,7 @@ private:
 
 #ifdef ALARMS_SUPPORT  
 
-  void inizializeAlarms();
+  void initializeAlarms();
   static void enableCheckAlarms();
   void checkAndFireAlarms();
   void createUpdateAlarm(char *id, unsigned long time, bool repeat);
